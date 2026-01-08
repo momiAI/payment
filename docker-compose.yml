@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    container_name: payment_db
+    environment:
+      POSTGRES_DB: stripe
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: stripe1234
+    ports:
+      - "8432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
