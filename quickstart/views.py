@@ -9,9 +9,11 @@ from .forms import UserRegisterForm,UserLoginForm
 
 def all_items(request):
     items = ItemModel.objects.all()
-    return render(request,'quickstart/items/item.html', {
-        'items' : items
-    })
+    if request.user.is_authenticated:
+        return render(request,'quickstart/items/item.html', {
+            'items' : items
+        })
+    return render(request,'quickstart/auth/notlogin.html')
 
 
 def login_views(request):

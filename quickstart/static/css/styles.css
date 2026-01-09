@@ -29,7 +29,9 @@ body {
 
 .header-container {
     position: relative;
-    height: 40px;
+    height: 50px;
+    display: flex;
+    align-items: center;
 }
 
 
@@ -39,8 +41,8 @@ body {
     transform: translateX(-50%);
     font-size: 28px;
     color: #ff6600;
-    margin: 0;
-    white-space: nowrap;
+    text-decoration: none;
+    font-weight: bold;
 }
 
 
@@ -252,4 +254,26 @@ main {
 
 .auth-footer a:hover {
     text-decoration: underline;
+}
+
+.header-cart {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.cart-link {
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #ff6600;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.cart-link:hover {
+    background-color: #e65c00;
+    transform: scale(1.05);
 }
