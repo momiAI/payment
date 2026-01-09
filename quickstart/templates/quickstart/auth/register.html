@@ -1,0 +1,30 @@
+{% extends "quickstart/base.html" %}
+
+{%block title%}Регистрация{%endblock%}
+
+
+{%block content%}
+<div class="auth-container">
+    <h2>Регистрация</h2>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Логин" required>
+        {% for error in form.username.errors %} 
+            <div class ='error'> {{error}}</div>
+        {% endfor %}
+        <input type="password" name="password" placeholder="Пароль" required>
+        {% for error in form.password.errors %} 
+            <div class ='error'> {{error}}</div>
+        {% endfor %}
+        <input type="password" name="password2" placeholder="Подтвердите пароль" required>
+        {% for error in form.non_field_errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
+        <button type="submit" class="auth-button">Зарегистрироваться</button>
+    </form>
+    <p class="auth-footer">
+        Уже есть аккаунт? <a href="{% url 'quickstart:login_user' %}">Войти</a>
+    </p>
+</div>
+
+{%endblock%}

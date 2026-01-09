@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Stripe Payments{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    
+    <header class="header">
+        <div class="container header-container">
+            <h1 class="logo">Stripe Payments</h1>
+            <div class="header-buttons">
+                <a href="{% url 'quickstart:register_user' %}" class="button">Регистрация</a>
+                <a href="{% url 'quickstart:login_user' %}" class="button">Вход</a>
+            </div>
+        </div>
+    </header>
+
+    
+    <main class="container">
+        {% block content %}
+        
+        {% endblock %}
+    </main>
+
+    
+    <footer class="footer">
+        <div class="container">
+            <p>Для формирования и оплаты корзины нужно авторизироваться</p>
+        </div>
+    </footer>
+</body>
+</html>
