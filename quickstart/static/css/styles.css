@@ -277,3 +277,120 @@ main {
     background-color: #e65c00;
     transform: scale(1.05);
 }
+
+.cart-container {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.cart-container h2 {
+    color: #ff6600;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+
+.cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 12px;
+    position: relative;
+}
+
+.cart-item-image img {
+    width: 120px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.cart-item-details {
+    flex: 1;
+    margin-left: 16px;
+}
+
+.cart-item-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.cart-item-desc {
+    margin: 4px 0;
+    font-size: 14px;
+    color: #666666;
+}
+
+.cart-item-price {
+    font-size: 16px;
+    font-weight: bold;
+    color: #ff6600;
+}
+
+
+.cart-item-remove {
+    border: none;
+    background: none;
+    font-size: 18px;
+    color: #ff6600;
+    cursor: pointer;
+    transition: transform 0.2s, color 0.2s;
+    margin-left: 12px;
+}
+
+.cart-item-remove:hover {
+    color: #e65c00;
+    transform: scale(1.2);
+}
+
+
+.cart-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.cart-currency label {
+    margin-right: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.cart-currency select {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.checkout-button {
+    background-color: #ff6600;
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.checkout-button:hover {
+    background-color: #e65c00;
+    transform: scale(1.02);
+}

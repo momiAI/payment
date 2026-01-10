@@ -1,0 +1,42 @@
+{% extends "quickstart/auth/baseAuth.html" %}
+
+{% block title %}Корзина{% endblock %}
+{%block button%}
+        <div class="header-cart">
+                <a href="{% url 'quickstart:items_list'%}" class="cart-link" title="Корзина">
+                    🔫 Предметы
+                </a>
+        </div>
+{%endblock%}
+{% block content %}
+<div class="cart-container">
+    <h2>Ваша корзина</h2>
+    {%for item in items%}
+    <div class="cart-items">
+        <div class="cart-item">
+            <div class="cart-item-image">
+                <img src="{{item.image.url}}" alt="Товар 1">
+            </div>
+            <div class="cart-item-details">
+                <h3 class="cart-item-title">{{item.name}}</h3>
+                <p class="cart-item-desc">{{item.description}}</p>
+                <span class="cart-item-price">{{item.price}}</span>
+            </div>
+            <button class="cart-item-remove" title="Удалить">✖</button>
+        </div>
+    {%endfor%}
+
+
+    <div class="cart-footer">
+        <div class="cart-currency">
+            <label for="currency">Валюта:</label>
+            <select id="currency" name="currency">
+                <option value="RUB">₽</option>
+                <option value="USD">$</option>
+                <option value="EUR">€</option>
+            </select>
+        </div>
+        <button class="checkout-button">Оформить заказ</button>
+    </div>
+</div>
+{% endblock %}

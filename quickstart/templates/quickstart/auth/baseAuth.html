@@ -14,12 +14,9 @@
             
             <a href="{% url 'quickstart:items_list' %}" class="logo">Stripe Payments</a>
 
-            
-            <div class="header-cart">
-                <a href="" class="cart-link" title="Корзина">
-                    🛒 Корзина
-                </a>
-            </div>
+            {%block button%}
+
+            {%endblock%}
         </div>
     </header>
 
@@ -33,5 +30,6 @@
             <p>Вы авторизированы!</p>
         </div>
     </footer>
+    {%block script%} {%endblock%}
 </body>
 </html>

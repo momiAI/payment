@@ -1,8 +1,11 @@
 
+import json
+
 from django.contrib.auth import authenticate,login
 from django.shortcuts import render,redirect
+from django.http import JsonResponse
 
-from .models import ItemModel
+from .models import ItemModel,OrderModel
 from .forms import UserRegisterForm,UserLoginForm
 
 
@@ -46,3 +49,31 @@ def register_views(request):
         form = UserRegisterForm()
 
     return render(request, 'quickstart/auth/register.html', {'form' : form})
+
+
+def add_item_to_cart(request):
+    data = json.loads(request.body)
+    
+    order = OrderModel.objects.create(
+        is_paid = False
+    )
+
+    item = ItemModel.objects.get(id = data['item_id'])
+
+    order.user.add(request.user)
+    order.items.add(item)
+
+    return JsonResponse({
+        'message' : 'ok'
+    })
+
+
+def cart_view(request):
+    if request.user.is_authenticated:
+        orders_user = OrderModel.objects.filter(user=request.user)
+        items = ItemModel.objects.filter(orders__in=orders_user).distinct()
+
+        return render(request,'quickstart/cart/cart.html', {
+            'items' : items
+        })
+    return render(request,'quickstart/auth/notlogin.html')
