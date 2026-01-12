@@ -13,7 +13,7 @@ class ItemModel(models.Model):
 
 
 class OrderModel(models.Model):
-    user = models.ManyToManyField(User,related_name='orders')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
     items = models.ManyToManyField(ItemModel,related_name='orders')
     created_at = models.DateTimeField(auto_now=True)
     is_paid = models.BooleanField(default=False)
@@ -21,3 +21,5 @@ class OrderModel(models.Model):
     def total_value(self):
         return sum(item.price for item in self.items.all())
     
+    def __str__(self):
+        return f"Order #{self.id} by {self.user.username}"

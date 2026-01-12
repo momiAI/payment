@@ -1,0 +1,12 @@
+{% extends "quickstart/auth/baseAuth.html" %}
+
+{%block button%}
+        <div class="header-cart">
+                <a href="{% url 'quickstart:items_list'%}" class="cart-link" title="Корзина">
+                    🔫 Предметы
+                </a>
+        </div>
+{%endblock%}
+{% block content%}
+<div>Успешная оплата</div>
+{%endblock%}

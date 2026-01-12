@@ -55,12 +55,11 @@ def add_item_to_cart(request):
     data = json.loads(request.body)
     
     order = OrderModel.objects.create(
+        user = request.user,
         is_paid = False
     )
 
     item = ItemModel.objects.get(id = data['item_id'])
-
-    order.user.add(request.user)
     order.items.add(item)
 
     return JsonResponse({
