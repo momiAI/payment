@@ -10,6 +10,9 @@
 {%endblock%}
 
 {% block content %}
+<div id="cart-notification" class="notification">
+    Товар добавлен в корзину 🛒
+</div>
 <div class="product-grid">
     {% for item in items %}
         <div class="product-card" data-item-id = {{item.id}}>
@@ -65,8 +68,14 @@
 
         document.querySelectorAll('.icon-button.cart').forEach(btn => {
         btn.addEventListener('click', () => {
-            const itemId = btn.closest('.product-card').dataset.itemId
+                const itemId = btn.closest('.product-card').dataset.itemId
+                const notification = document.getElementById('cart-notification');
 
+                notification.classList.add('show');
+
+                setTimeout(() => {
+                notification.classList.remove('show');
+                }, 3000);
             fetch('/item/add/', {
                 method : 'POST',
                 headers : {

@@ -10,7 +10,8 @@ urlpatterns = [
     path('register/', views.register_views, name = 'register_user'),
     path('login/', views.login_views, name = 'login_user'),
     path('item/add/', views.add_item_to_cart, name = 'item_add'),
-    path('cart/',views.cart_view, name = 'cart_view')
+    path('cart/',views.cart_view, name = 'cart_view'),
+    path('cart/remove/<int:item_id>/', views.remove_item_from_cart, name='remove_from_cart')
 ]
 
 

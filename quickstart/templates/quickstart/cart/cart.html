@@ -12,7 +12,7 @@
 <div class="cart-container">
     <h2>Ваша корзина</h2>
     {%for item in items%}
-    <div class="cart-items">
+    <div class="cart-items" data-item-id = {{item.id}}>
         <div class="cart-item">
             <div class="cart-item-image">
                 <img src="{{item.image.url}}" alt="Товар 1">
@@ -40,3 +40,41 @@
     </div>
 </div>
 {% endblock %}
+
+{%block script%}
+<script>
+    
+function getCookie(name) {
+    let cookieValue = null
+    document.cookie.split(';').forEach(cookie => {
+        cookie = cookie.trim()
+        if (cookie.startsWith(name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
+        }
+    })
+    return cookieValue
+}
+
+    document.querySelectorAll('.cart-item-remove').forEach(btn => {
+    btn.addEventListener('click', function () {
+
+        const itemBlock = this.closest('.cart-items')
+        const itemId = itemBlock.dataset.itemId
+
+        fetch(`/cart/remove/${itemId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                itemBlock.remove()  
+            }
+        })
+    })
+})
+</script>
+{%endblock%}

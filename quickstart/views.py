@@ -77,3 +77,16 @@ def cart_view(request):
             'items' : items
         })
     return render(request,'quickstart/auth/notlogin.html')
+
+def remove_item_from_cart(request, item_id):
+    order = OrderModel.objects.filter(
+        user=request.user,
+        items__id=item_id,
+        is_paid=False
+    ).first()
+
+    if not order:
+        return JsonResponse({'success': False})
+
+    order.items.remove(item_id)
+    return JsonResponse({'success': True})
