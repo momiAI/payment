@@ -8,5 +8,21 @@
         </div>
 {%endblock%}
 {% block content%}
-<div>Не удалось оплатить!</div>
+<div class="payment-container cancel">
+    <div class="payment-icon">❌</div>
+    <h2>Платёж не был выполнен</h2>
+    <p>
+        К сожалению, оплата не прошла.<br>
+        Вы можете попробовать ещё раз или вернуться в корзину.
+    </p>
+
+    <div class="payment-actions">
+        <a href="{% url 'quickstart:cart_view' %}" class="payment-button secondary">
+            Вернуться в корзину
+        </a>
+        <a href="{% url 'quickstart:items_list' %}" class="payment-button">
+            Каталог предметов
+        </a>
+    </div>
+</div>
 {%endblock%}

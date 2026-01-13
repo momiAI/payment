@@ -8,5 +8,18 @@
         </div>
 {%endblock%}
 {% block content%}
-<div>Успешная оплата</div>
+<div class="payment-container success">
+    <div class="payment-icon">✅</div>
+    <h2>Платёж успешно выполнен</h2>
+    <p>
+        Спасибо за покупку!<br>
+        Оплата прошла успешно, заказ принят в обработку.
+    </p>
+
+    <div class="payment-actions">
+        <a href="{% url 'quickstart:items_list' %}" class="payment-button">
+            Вернуться к предметам
+        </a>
+    </div>
+</div>
 {%endblock%}

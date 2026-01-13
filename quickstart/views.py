@@ -1,6 +1,7 @@
 
 import json
 
+from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate,login
 from django.shortcuts import render,redirect
 from django.http import JsonResponse
@@ -53,17 +54,29 @@ def register_views(request):
 
 def add_item_to_cart(request):
     data = json.loads(request.body)
-    
-    order = OrderModel.objects.create(
-        user = request.user,
-        is_paid = False
+    item_id = data.get('item_id')
+
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': 'Unauthorized'}, status=401)
+
+    item = get_object_or_404(ItemModel, id=item_id)
+
+
+    order, created = OrderModel.objects.get_or_create(
+        user=request.user,
+        is_paid=False
     )
 
-    item = ItemModel.objects.get(id = data['item_id'])
+
+    if order.items.filter(id=item.id).exists():
+        return JsonResponse({
+            'message': 'item already in cart'
+        })
+
     order.items.add(item)
 
     return JsonResponse({
-        'message' : 'ok'
+        'message': 'ok'
     })
 
 

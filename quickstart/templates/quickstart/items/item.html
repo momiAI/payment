@@ -13,6 +13,21 @@
 <div id="cart-notification" class="notification">
     Товар добавлен в корзину 🛒
 </div>
+
+<div class="items-toolbar">
+    <h2>Каталог товаров</h2>
+
+    <div class="currency-selector">
+        <label for="currency">Валюта:</label>
+        <select id="currency" name="currency">
+                <option value="usd">$ USD</option>
+                <option value="rub">₽ RUB</option>
+                <option value="eur">€ EUR</option>
+        </select>
+    </div>
+</div>
+
+
 <div class="product-grid">
     {% for item in items %}
         <div class="product-card" data-item-id = {{item.id}}>
@@ -27,7 +42,7 @@
                 </p>
 
                 <div class="product-footer">
-                        <span class="product-price">{{item.price}}</span>
+                        <span class="product-price" data-usd = {{item.price}}>{{item.price}} $</span>
 
                 <div class="product-actions">
                         <button class="icon-button cart" title="Добавить в корзину">
@@ -43,10 +58,30 @@
     {% endfor %}
 </div>
 
+<div id="checkout-overlay" class="checkout-overlay">
+    <div class="checkout-modal">
+        <div class="loader"></div>
+        <p>Подготавливаем оплату…<br>Пожалуйста, подождите</p>
+    </div>
+</div>
 {% endblock %}
 
 {%block script%} 
  <script type="text/javascript" >
+
+
+        const rates = { usd: 1, eur: 0.93, rub: 75.2 };
+        const iconCurrency = {usd : "$" , eur : "€" , rub : "₽" }
+        const prices = document.querySelectorAll('.product-price');
+
+        document.getElementById('currency').addEventListener('change', (e) => {
+        const currency = e.target.value;
+        prices.forEach(span => {
+                const usd = parseFloat(span.dataset.usd);
+                span.textContent = (usd * rates[currency]).toFixed(2) + ' ' + iconCurrency[currency];
+        });
+        });
+
         function getCookie(name) {
                 let cookieValue = null;
                 if (document.cookie && document.cookie !== '') {
@@ -89,5 +124,52 @@
         })
     })
 
+    document.querySelectorAll('.icon-button.buy').forEach(btn => { 
+    btn.addEventListener('click', () => {
+        const itemId = btn.closest('.product-card').dataset.itemId;
+        const notification = document.getElementById('cart-notification');
+        const currencySelect = document.getElementById("currency");
+        const selectedCurrency = currencySelect.value;
+        const overlay = document.getElementById('checkout-overlay')
+
+       
+        fetch('/item/add/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify({ item_id: itemId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'ok') {
+                overlay.style.display = 'flex';
+                return fetch('/checkout-session/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({ 
+                        item_ids: [itemId],
+                        currency : selectedCurrency
+                })
+                });
+            } else {
+                alert("Товар находится в корзине, пожалуйста оформите платеж через неё.");
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.url) {
+                window.location.href = data.url;
+            } else {
+                alert("Ошибка при создании платежа");
+            }
+        })
+
+    });
+});
     </script> 
 {%endblock%}

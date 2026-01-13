@@ -15,15 +15,16 @@
     <div class="cart-items" data-item-id = {{item.id}}>
         <div class="cart-item">
             <div class="cart-item-image">
-                <img src="{{item.image.url}}" alt="Товар 1">
+                <img src="{{item.image.url}}">
             </div>
             <div class="cart-item-details">
                 <h3 class="cart-item-title">{{item.name}}</h3>
                 <p class="cart-item-desc">{{item.description}}</p>
-                <span class="cart-item-price">{{item.price}}</span>
+                <span class="cart-item-price" data-usd = {{item.price}}>{{item.price}}$</span>
             </div>
             <button class="cart-item-remove" title="Удалить">✖</button>
         </div>
+    </div>
     {%endfor%}
 
 
@@ -31,18 +32,38 @@
         <div class="cart-currency">
             <label for="currency">Валюта:</label>
             <select id="currency" name="currency">
-                <option value="RUB">₽</option>
-                <option value="USD">$</option>
-                <option value="EUR">€</option>
+                <option value="usd"> $ </option>
+                <option value="rub"> ₽ </option>
+                <option value="eur"> € </option>
             </select>
         </div>
         <button class="checkout-button">Оформить заказ</button>
+    </div>
+</div>
+
+<div id="checkout-overlay" class="checkout-overlay">
+    <div class="checkout-modal">
+        <div class="loader"></div>
+        <p>Подготавливаем оплату…<br>Пожалуйста, подождите</p>
     </div>
 </div>
 {% endblock %}
 
 {%block script%}
 <script>
+
+const rates = { usd: 1, eur: 0.93, rub: 75.2 };
+const iconCurrency = {usd : "$" , eur : "€" , rub : "₽" }
+const prices = document.querySelectorAll('.cart-item-price');
+
+
+document.getElementById('currency').addEventListener('change', (e) => {
+    const currency = e.target.value;
+    prices.forEach(span => {
+        const usd = parseFloat(span.dataset.usd);
+        span.textContent = (usd * rates[currency]).toFixed(2) + ' ' + iconCurrency[currency];
+    });
+});
     
 function getCookie(name) {
     let cookieValue = null
@@ -76,5 +97,54 @@ function getCookie(name) {
         })
     })
 })
+
+document.querySelector(".checkout-button").addEventListener("click", function () {
+
+    const currencySelect = document.getElementById("currency");
+    const selectedCurrency = currencySelect.value;
+
+    const items = document.querySelectorAll(".cart-items");
+    const itemIds = [];
+    const overlay = document.getElementById('checkout-overlay');
+
+
+
+    items.forEach(item => {
+        const id = item.dataset.itemId;
+        if (id) {
+            itemIds.push(id);
+        }
+    });
+
+    if (itemIds.length === 0) {
+        alert("пусто");
+        return;
+    }
+    
+
+    fetch("/checkout-session/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCookie("csrftoken")
+        },
+        body: JSON.stringify({
+            item_ids: itemIds,
+            currency : selectedCurrency
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.url) {
+            overlay.style.display = 'flex';
+            window.location.href = data.url;
+        } else {
+            alert("Ошибка при создании платежа");
+        }
+    })
+    .catch(error => {
+        console.error("Ошибка:", error);
+    });
+});
 </script>
 {%endblock%}
