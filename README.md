@@ -1,4 +1,4 @@
-##Запуск проекта осуществляется через Docker 
+##Запуск проекта осуществляется через Docker##
 
 `git clone https://github.com/momiAI/payment.git`
 `cd payment`
@@ -9,10 +9,10 @@
 - STRIPE_SECRET_KEY=1
 - STRIPE_WEBHOOK_SECRET=1
 
-##запуск проекта 
+##запуск проекта##
 docker-compose up --build
 
 веб страница будет доступна по данному адресу `http://localhost:8000`
 
-##остановка проекта:
+##остановка проекта:##
 docker-compose down
