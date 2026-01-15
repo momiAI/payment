@@ -52,8 +52,8 @@ def create_checkout_session(request):
         mode = 'payment',
         payment_method_types=['card'],
         line_items=line_items,
-        success_url='http://localhost/success_payment/',
-        cancel_url='http://localhost/cancle_payment/',
+        success_url='http://localhost:8000/success_payment/',
+        cancel_url='http://localhost:8000/cancle_payment/',
         metadata={
         "item_ids": ",".join(map(str, items.values_list("id", flat=True)))
         }

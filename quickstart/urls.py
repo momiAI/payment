@@ -7,7 +7,7 @@ from django.conf.urls.static import static
 app_name = 'quickstart' 
 
 urlpatterns = [
-    path('items/',views.all_items,name='items_list'),
+    path('',views.all_items,name='items_list'),
     path('register/', views.register_views, name = 'register_user'),
     path('login/', views.login_views, name = 'login_user'),
     path('item/add/', views.add_item_to_cart, name = 'item_add'),
